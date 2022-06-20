@@ -1,0 +1,27 @@
+version: 0.2
+
+env:
+  variables:
+    CI: true
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+  pre_build:
+    commands:
+      - cd ${CODEBUILD_SRC_DIR}/create-react-app
+      - npm ci
+  build:
+    commands:
+      - cd ${CODEBUILD_SRC_DIR}/create-react-app
+      - npm run test
+
+artifacts:
+  files:
+    - codepipeline/lib/buildspec.yaml
+    - create-react-app/src/**/*
+    - create-react-app/tsconfig.json
+    - create-react-app/package.json
+    - create-react-app/package-lock.json
+    - create-react-app/public/**/*

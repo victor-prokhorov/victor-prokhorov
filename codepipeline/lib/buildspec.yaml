@@ -1,0 +1,23 @@
+version: 0.2
+
+env:
+  variables:
+    CI: true
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+  pre_build:
+    commands:
+      - cd ${CODEBUILD_SRC_DIR}/create-react-app
+      - npm ci
+  build:
+    commands:
+      - ls
+      - cd ${CODEBUILD_SRC_DIR}/create-react-app
+      - npm run build
+
+artifacts:
+  base-directory: create-react-app/build
+  files: '**/*'
