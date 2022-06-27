@@ -14,11 +14,14 @@ make -C neovim CMAKE_BUILD_TYPE=RelWithDebInfo
 sudo make -C neovim install
 
 git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-        $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
+        ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
-mkdir -p $HOME/.config/nvim/lua
+mkdir -p ~/.config/nvim/lua
 
-cp ../settings/init.vim $HOME/.config/nvim
-cp ../settings/plugins.lua $HOME/.config/nvim/lua
+cp ../settings/init.vim ~/.config/nvim
+cp ../settings/plugins.lua ~/.config/nvim/lua
 
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+yes | ~/.fzf/install
+
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' > /dev/null
