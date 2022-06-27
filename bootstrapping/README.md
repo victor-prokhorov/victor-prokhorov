@@ -1,6 +1,6 @@
 ```sh
-chmod +x editor.sh
-./editor.sh
+chmod +x install.sh
+./install.sh
 ```
 
 
