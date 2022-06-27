@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-apt update && apt install -y \
+sudo apt update && sudo apt install -y \
         build-essential \
         cmake \
         pkg-config \
@@ -11,13 +11,14 @@ apt update && apt install -y \
 
 git clone https://github.com/neovim/neovim
 make -C neovim CMAKE_BUILD_TYPE=RelWithDebInfo
-make -C neovim install
+sudo make -C neovim install
 
 git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-        .local/share/nvim/site/pack/packer/start/packer.nvim
+        $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
 
-mkdir -p .config/nvim/lua
+mkdir -p $HOME/.config/nvim/lua
 
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 cp ../settings/init.vim $HOME/.config/nvim
 cp ../settings/plugins.lua $HOME/.config/nvim/lua
+
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
