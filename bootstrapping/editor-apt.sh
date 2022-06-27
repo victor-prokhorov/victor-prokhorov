@@ -23,5 +23,6 @@ cp ../settings/plugins.lua ~/.config/nvim/lua
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 yes | ~/.fzf/install
+source ~/.bashrc
 
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' &> /dev/null
