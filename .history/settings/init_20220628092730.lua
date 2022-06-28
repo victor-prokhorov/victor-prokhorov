@@ -82,7 +82,7 @@ cmd [[set smartindent]]
 
 require'nvim-autopairs'.setup {}
 
--- require('plugins')
+require('plugins')
 require'lspconfig'.tsserver.setup {}
 require('rust-tools').setup({})
 

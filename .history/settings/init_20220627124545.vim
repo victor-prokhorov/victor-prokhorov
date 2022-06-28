@@ -1,3 +1,9 @@
+lua require('plugins')
+lua require'lspconfig'.tsserver.setup{}
+lua require('rust-tools').setup({})
+
+lua require('nvim-autopairs').setup({})
+lua require('nvim-autopairs').enable()
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
@@ -18,12 +24,6 @@ call Base16hi("LspSignatureActiveParameter", g:base16_gui05, g:base16_gui03, g:b
 
 set completeopt=menu,menuone,noselect
 
-lua require('plugins')
-lua require'lspconfig'.tsserver.setup{}
-lua require('rust-tools').setup({})
-
-lua require('nvim-autopairs').setup({})
-lua require('nvim-autopairs').enable()
 lua <<EOF
   -- Setup nvim-cmp.
   local cmp = require'cmp'
@@ -111,6 +111,9 @@ local map_cr = true
 local map_bs = true  -- map the <BS> key
 local map_c_h = false  -- Map the <C-h> key to delete a pair
 local map_c_w = false -- map <c-w> to delete a pair if possible
+EOF
+
+lua <<EOF
 
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()

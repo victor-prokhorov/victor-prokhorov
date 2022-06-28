@@ -23,7 +23,7 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 yes | ~/.fzf/install
 source ~/.bashrc
 
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' # &> /dev/null
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
 
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
@@ -32,4 +32,4 @@ mkdir ~/.npm-global
 npm config set prefix '~/.npm-global'
 export PATH=~/.npm-global/bin:$PATH
 source ~/.profile
-npm i -g typescript typescript-language-server vscode-langservers-extracted eslint prettier
+npm i -g typescript typescript-language-server

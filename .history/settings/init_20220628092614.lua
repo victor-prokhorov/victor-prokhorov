@@ -82,12 +82,12 @@ cmd [[set smartindent]]
 
 require'nvim-autopairs'.setup {}
 
--- require('plugins')
+require('plugins')
 require'lspconfig'.tsserver.setup {}
 require('rust-tools').setup({})
 
--- require('nvim-autopairs').setup({})
--- require('nvim-autopairs').enable()
+require('nvim-autopairs').setup({})
+require('nvim-autopairs').enable()
 -- Setup nvim-cmp.
 local cmp = require 'cmp'
 

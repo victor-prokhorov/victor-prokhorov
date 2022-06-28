@@ -28,8 +28,9 @@ nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' # &> /d
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 
+# WSL 2 double check on normal
 mkdir ~/.npm-global
 npm config set prefix '~/.npm-global'
 export PATH=~/.npm-global/bin:$PATH
 source ~/.profile
-npm i -g typescript typescript-language-server vscode-langservers-extracted eslint prettier
+npm install -g typescript typescript-language-server

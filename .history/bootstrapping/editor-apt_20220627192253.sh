@@ -15,6 +15,7 @@ sudo make -C neovim install
 
 git clone --depth 1 https://github.com/wbthomason/packer.nvim \
         ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+
 mkdir -p ~/.config/nvim/lua
 cp ../settings/init.vim ~/.config/nvim
 cp ../settings/plugins.lua ~/.config/nvim/lua
@@ -27,9 +28,3 @@ nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' # &> /d
 
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
-
-mkdir ~/.npm-global
-npm config set prefix '~/.npm-global'
-export PATH=~/.npm-global/bin:$PATH
-source ~/.profile
-npm i -g typescript typescript-language-server vscode-langservers-extracted eslint prettier

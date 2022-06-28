@@ -18,12 +18,6 @@ call Base16hi("LspSignatureActiveParameter", g:base16_gui05, g:base16_gui03, g:b
 
 set completeopt=menu,menuone,noselect
 
-lua require('plugins')
-lua require'lspconfig'.tsserver.setup{}
-lua require('rust-tools').setup({})
-
-lua require('nvim-autopairs').setup({})
-lua require('nvim-autopairs').enable()
 lua <<EOF
   -- Setup nvim-cmp.
   local cmp = require'cmp'

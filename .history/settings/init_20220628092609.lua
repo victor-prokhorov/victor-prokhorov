@@ -47,7 +47,7 @@ require('packer').startup(function()
     use 'L3MON4D3/LuaSnip'
     use 'nvim-lua/plenary.nvim'
     use 'mfussenegger/nvim-dap'
-    use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
+    use ''
 end)
 
 cmd [[syntax on]]
@@ -82,12 +82,12 @@ cmd [[set smartindent]]
 
 require'nvim-autopairs'.setup {}
 
--- require('plugins')
+require('plugins')
 require'lspconfig'.tsserver.setup {}
 require('rust-tools').setup({})
 
--- require('nvim-autopairs').setup({})
--- require('nvim-autopairs').enable()
+require('nvim-autopairs').setup({})
+require('nvim-autopairs').enable()
 -- Setup nvim-cmp.
 local cmp = require 'cmp'
 
