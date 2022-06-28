@@ -1,35 +1,64 @@
 #!/usr/bin/env bash
 
 sudo apt update && sudo apt install -y \
-        build-essential \
-        cmake \
-        pkg-config \
+        ninja-build \
+        gettext \
         libtool \
         libtool-bin \
+        autoconf \
+        automake \
+        cmake \
+        g++ \
+        pkg-config \
         unzip \
-        gettext
+        curl \
+        doxygen
 
-git clone https://github.com/neovim/neovim
-make -C neovim CMAKE_BUILD_TYPE=RelWithDebInfo
-sudo make -C neovim install
+if [ -d ~/neovim ]
+then
+        echo 'skip for now'
+        # test maybe this is too much of removing for an update
+        # sudo rm -rf /usr/local/bin/nvim
+        # git -C ~/neovim pull
+        # make -C ~/neovim distclean
+        # make -C ~/neovim clean
+        # make -C ~/neovim CMAKE_BUILD_TYPE=RelWithDebInfo
+        # sudo make -C ~/neovim install
+else
+        git clone https://github.com/neovim/neovim ~/neovim
+        make -C ~/neovim CMAKE_BUILD_TYPE=RelWithDebInfo
+        sudo make -C ~/neovim install
+fi
 
-git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-        ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-mkdir -p ~/.config/nvim/lua
-cp ../settings/init.vim ~/.config/nvim
-cp ../settings/plugins.lua ~/.config/nvim/lua
+if [ ! -d ~/.local/share/nvim/site/pack/packer/start/packer.nvim ]
+then
+        git clone --depth 1 https://github.com/wbthomason/packer.nvim \
+                ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+fi
 
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-yes | ~/.fzf/install
-source ~/.bashrc
+if [ ! -d ~/.config/nvim ]
+then
+        mkdir -p ~/.config/nvim
+        cp ../settings/init.lua ~/.config/nvim
+fi
+
+if [ -d ~/.fzf ]
+then
+        git -C ~/.fzf pull && yes | ~/.fzf/./install
+else
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+        yes | ~/.fzf/install
+fi
 
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' # &> /dev/null
 
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 
-mkdir ~/.npm-global
-npm config set prefix '~/.npm-global'
-export PATH=~/.npm-global/bin:$PATH
-source ~/.profile
+if [ ! -d ~/.npm-global ]; then
+        mkdir ~/.npm-global
+        npm config set prefix '~/.npm-global'
+        echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.profile
+fi
+
 npm i -g typescript typescript-language-server vscode-langservers-extracted eslint prettier

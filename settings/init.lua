@@ -47,15 +47,16 @@ require('packer').startup(function()
     use 'L3MON4D3/LuaSnip'
     use 'nvim-lua/plenary.nvim'
     use 'mfussenegger/nvim-dap'
-    use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
+    -- use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
 end)
 
 cmd [[syntax on]]
 cmd [[set termguicolors]]
-cmd [[colorscheme base16-gruvbox-dark-hard]]
+-- cmd [[colorscheme base16-gruvbox-dark-hard]]
+cmd [[colorscheme slate]]
 cmd [[set background=dark]]
-cmd [[call Base16hi("Comment", g:base16_gui09, "", g:base16_cterm09, "", "", "")]]
-cmd [[call Base16hi("LspSignatureActiveParameter", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold", "")]]
+-- cmd [[call Base16hi("Comment", g:base16_gui09, "", g:base16_cterm09, "", "", "")]]
+-- cmd [[call Base16hi("LspSignatureActiveParameter", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold", "")]]
 cmd [[set noshowmode]]
 cmd [[set encoding=utf-8]]
 cmd [[set hidden]]
@@ -84,7 +85,7 @@ require'nvim-autopairs'.setup {}
 
 -- require('plugins')
 require'lspconfig'.tsserver.setup {}
-require('rust-tools').setup({})
+-- require('rust-tools').setup({})
 
 -- require('nvim-autopairs').setup({})
 -- require('nvim-autopairs').enable()
@@ -187,7 +188,8 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 local lspconfig = require('lspconfig')
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = {'clangd', 'rust_analyzer', 'pyright', 'tsserver'}
+-- local servers = {'clangd', 'rust_analyzer', 'pyright', 'tsserver'}
+local servers = {'tsserver'}
 for _, lsp in ipairs(servers) do
     lspconfig[lsp].setup {
         -- on_attach = my_custom_on_attach,
