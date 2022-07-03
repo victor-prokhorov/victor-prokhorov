@@ -1,3 +1,6 @@
+npm i @johnnymorganz/stylua -
+lua formatter via cmd 
+
 chmod +x install.sh
 sudo ./install.sh
 

@@ -1,9 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
+// import React from 'react';
+// import logo from './logo.svg';
+// import './App.css';
+//
+import React from 'react'
+import logo from 'logo';
 import './App.css';
+import Card from './cmd';
+
 
 const a = 1;
-const a = 2;
+// const a = 2;
+//
 
 function App() {
   return (
@@ -25,5 +32,7 @@ function App() {
     </div>
   );
 }
+
+console.log({a});
 
 export default App;

@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * mega cool fn yo
+ */
 function Card() {
   return (
     <div>
