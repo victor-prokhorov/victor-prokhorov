@@ -1,32 +1,32 @@
 local cmd = vim.cmd
 
-vim.g.completeopt = "menu,menuone,noinsert,noselect"
+vim.g.completeopt="menu,menuone,noinsert,noselect"
 
 -- cmd 'set indentexpr='
-cmd "colorscheme peachpuff"
-cmd "set updatetime=150"
-cmd "set number"
-cmd "set autoindent"
-cmd "set smartindent"
-cmd "set nohlsearch"
-cmd "set hidden"
-cmd "set wildmenu"
-cmd "set wildmode=list:longest"
-cmd "set scrolloff=2"
-cmd "set encoding=utf-8"
-cmd "set incsearch"
-cmd "set ignorecase"
-cmd "set smartcase"
-cmd "set gdefault"
-cmd "set shiftwidth=2"
-cmd "set softtabstop=2"
-cmd "set tabstop=2"
-cmd "set expandtab"
-cmd "set mouse=a"
+cmd 'colorscheme peachpuff'
+cmd 'set updatetime=150'
+cmd 'set number'
+cmd 'set autoindent'
+cmd 'set smartindent'
+cmd 'set nohlsearch'
+cmd 'set hidden'
+cmd 'set wildmenu'
+cmd 'set wildmode=list:longest'
+cmd 'set scrolloff=2'
+cmd 'set encoding=utf-8'
+cmd 'set incsearch'
+cmd 'set ignorecase'
+cmd 'set smartcase'
+cmd 'set gdefault'
+cmd 'set shiftwidth=2'
+cmd 'set softtabstop=2'
+cmd 'set tabstop=2'
+cmd 'set expandtab'
+cmd 'set mouse=a'
 
-local use = require "packer".use
+local use = require("packer").use
 
-require "packer".startup(
+require("packer").startup(
     function()
         use "wbthomason/packer.nvim"
         use "nvim-treesitter/nvim-treesitter"
@@ -48,52 +48,56 @@ require "packer".startup(
 -- local cmp = require('cmp')
 -- cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done({map_char = {tex = ''}}))
 -- :w
-require "nvim-autopairs".setup {
-    disable_in_macro = false,
-    disable_in_visualblock = false,
-    ignored_next_char = [=[[%w%%%'%[%"%.]]=],
-    enable_moveright = true,
-    enable_afterquote = true,
-    enable_check_bracket_line = true,
-    enable_bracket_in_quote = true,
-    break_undo = true,
-    check_ts = false,
-    map_cr = true,
-    map_bs = true,
-    map_c_h = false,
-    map_c_w = false
+require("nvim-autopairs").setup {
+disable_filetype = { "TelescopePrompt" },
+disable_in_macro = false,
+disable_in_visualblock = false,
+ignored_next_char = [=[[%w%%%'%[%"%.]]=],
+enable_moveright = true,
+enable_afterquote = true ,
+enable_check_bracket_line = true,
+enable_bracket_in_quote = true,
+break_undo = true,
+check_ts = false,
+map_cr = true,
+map_bs = true,
+map_c_h = false,
+map_c_w = false,
 }
 
-require "nvim-treesitter.configs".setup {
-    ensure_installed = {
-        "lua",
-        "bash",
-        "yaml",
-        "rust",
-        "toml",
-        "dockerfile",
-        "javascript",
-        "typescript",
-        "graphql",
-        "make",
-        "markdown",
-        "ninja",
-        "html",
-        "css",
-        "jsdoc",
-        "json",
-        "tsx"
-    },
-    sync_install = false,
-    highlight = {enable = true, additional_vim_regex_highlighting = false},
-    indent = {
-        enable = true
-    }
-}
-local cmp_autopairs = require "nvim-autopairs.completion.cmp"
-
+ require("nvim-treesitter.configs").setup {
+     ensure_installed = {
+         "lua",
+         "bash",
+         "yaml",
+         "rust",
+         "toml",
+         "dockerfile",
+         "javascript",
+         "typescript",
+         "graphql",
+         "make",
+         "markdown",
+         "ninja",
+         "html",
+         "css",
+         "jsdoc",
+         "json",
+         "tsx"
+     },
+     sync_install = false,
+     highlight = {enable = true, additional_vim_regex_highlighting = false},
+     indent = {
+    enable = true
+  }
+ }
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+-- local cmp = require('cmp')
 local cmp = require "cmp"
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
 
 cmp.setup(
     {
@@ -103,9 +107,9 @@ cmp.setup(
             end
         },
         mapping = {
-            ["<Tab>"] = cmp.mapping.confirm({select = true}),
-            ["<C-p>"] = cmp.mapping.select_prev_item(),
-            ["<C-n>"] = cmp.mapping.select_next_item()
+            ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+            ['<C-p>'] = cmp.mapping.select_prev_item(),
+            ['<C-n>'] = cmp.mapping.select_next_item(),
         },
         -- formatting = {
         --   fields = { 'menu', 'abbr', 'kind'}
@@ -212,19 +216,19 @@ end
 
 local lsp_flags = {debounce_text_changes = 150}
 
-local capabilities = require "cmp_nvim_lsp".update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-local lspconfig = require "lspconfig"
+local lspconfig = require("lspconfig")
 
-require "lspconfig".tsserver.setup {
+require"lspconfig".tsserver.setup {
     on_attach = on_attach,
     flags = lsp_flags,
     capabilities = capabilities
 }
 
-require "lspconfig".html.setup {
+require'lspconfig'.html.setup {
     on_attach = on_attach,
     flags = lsp_flags,
-    capabilities = capabilities
+  capabilities = capabilities,
 }
