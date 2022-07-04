@@ -36,10 +36,10 @@ then
                 ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 fi
 
-if [ ! -d ~/.config/nvim ]
-then
-        mkdir -p ~/.config/nvim
-        cp ../settings/init.lua ~/.config/nvim
+if [ ! -d ~/.config ]; then
+        # mkdir -p ~/.config/nvim
+        # cp ../settings/init.lua ~/.config/nvim
+        ln -s ~/victor-prokhorov/.config/ ~/.config 
 fi
 
 if [ -d ~/.fzf ]
@@ -50,7 +50,6 @@ else
         yes | ~/.fzf/install
 fi
 
-nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' # &> /dev/null
 
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
@@ -62,3 +61,5 @@ if [ ! -d ~/.npm-global ]; then
 fi
 
 npm i -g typescript typescript-language-server vscode-langservers-extracted eslint prettier
+
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' #&> /dev/null
