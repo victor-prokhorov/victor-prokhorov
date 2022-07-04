@@ -22,3 +22,4 @@ close buffer
 instead of coping files its better to simlink so both whenever you modify the thing its both changed
 init.lua for exmaple would be perfect
 
+try with win bash and choco to minimize changes for windows if not maybe just ansible
