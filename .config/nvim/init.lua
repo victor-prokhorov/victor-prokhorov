@@ -228,3 +228,9 @@ require "lspconfig".html.setup {
     flags = lsp_flags,
     capabilities = capabilities
 }
+
+require "lspconfig".cssls.setup {
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = capabilities
+}
