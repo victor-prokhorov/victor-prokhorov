@@ -50,7 +50,7 @@ else
         yes | ~/.fzf/install
 fi
 
-
+sudo apt remove nodejs # remove old version
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 
