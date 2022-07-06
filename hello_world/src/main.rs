@@ -8,3 +8,9 @@ fn hello(_unused_string_for_fun: String) -> () {
     hi.push_str(&world);
     println!("{}", hi);
 }
+
+#[allow(dead_code)]
+fn yes() -> String {
+    let hello = String::from("hello");
+    return hello;
+}

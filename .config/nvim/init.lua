@@ -23,14 +23,18 @@ require "packer".startup(
 local cmd = vim.cmd
 vim.g.completeopt = "menu,menuone,noinsert,noselect"
 
+cmd "set noswapfile"
+cmd "set signcolumn=yes" -- always draw the column for diagnostics signs 
+cmd "set scrolloff=10"
+-- cmd "set laststatus=2"
 cmd "set clipboard=unnamed" -- share buffer between neovim and tmux
-
+cmd "set timeoutlen=150"
 cmd "set nocompatible"
 cmd "filetype off"
 cmd "set termguicolors"
 cmd "colorscheme base16-gruvbox-dark-hard"
 -- cmd "colorscheme zenburn"
-cmd "set updatetime=150"
+cmd "set updatetime=150" -- diagnostic message
 cmd "set number"
 cmd "set autoindent"
 cmd "set smartindent"
