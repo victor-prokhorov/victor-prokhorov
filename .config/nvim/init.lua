@@ -25,8 +25,6 @@ vim.g.completeopt = "menu,menuone,noinsert,noselect"
 
 cmd "set noswapfile"
 cmd "set signcolumn=yes" -- always draw the column for diagnostics signs 
-cmd "set scrolloff=10"
--- cmd "set laststatus=2"
 cmd "set clipboard=unnamed" -- share buffer between neovim and tmux
 cmd "set timeoutlen=150"
 cmd "set nocompatible"
@@ -42,7 +40,7 @@ cmd "set hlsearch"
 cmd "set hidden"
 cmd "set wildmenu"
 cmd "set wildmode=list:longest"
-cmd "set scrolloff=2"
+cmd "set scrolloff=4" -- as in vscode keep 4 lines always visible
 cmd "set encoding=utf-8"
 cmd "set incsearch"
 cmd "set ignorecase"
