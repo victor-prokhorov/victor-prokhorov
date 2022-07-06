@@ -64,22 +64,24 @@ if [ ! -d ~/.npm-global ]; then
 fi
 
 # TODO: this stack as well
+npm i npm@latest -g
 npm i -g typescript typescript-language-server vscode-langservers-extracted eslint prettier
+npm update -g
 
 
 # timeout this too
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' &> /dev/null
 # https://rust-lang.github.io/rustup/installation/index.html
 
-# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none -y
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none -y
 # probably need to source
-# source ~/.profile
-# rustup toolchain install nightly --allow-downgrade --profile minimal --component clippy
+source ~/.profile
+rustup toolchain install nightly --allow-downgrade --profile minimal --component clippy rustfmt
+# rustup component add rustfmt
 
 # https://rust-analyzer.github.io/manual.html#installation
-# git clone https://github.com/rust-analyzer/rust-analyzer.git && cd rust-analyzer
-# cargo xtask install --server
-# rustup component add rustfmt
+git clone https://github.com/rust-analyzer/rust-analyzer.git ~/rust-analyzer && cd ~/rust-analyzer
+cargo xtask install --server
 
 # !
 # this laso include things included early edit
