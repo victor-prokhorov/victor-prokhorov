@@ -1,14 +1,15 @@
 local cmd = vim.cmd
-
 vim.g.completeopt = "menu,menuone,noinsert,noselect"
 
--- cmd 'set indentexpr='
-cmd "colorscheme peachpuff"
+cmd "set nocompatible"
+cmd "filetype off"
+-- cmd "colorscheme base16-gruvbox-dark-hard"
+cmd "colorscheme zenburn"
 cmd "set updatetime=150"
 cmd "set number"
 cmd "set autoindent"
 cmd "set smartindent"
-cmd "set nohlsearch"
+cmd "set hlsearch"
 cmd "set hidden"
 cmd "set wildmenu"
 cmd "set wildmode=list:longest"
@@ -23,6 +24,8 @@ cmd "set softtabstop=2"
 cmd "set tabstop=2"
 cmd "set expandtab"
 cmd "set mouse=a"
+cmd "syntax enable" -- required by rust.vim
+cmd "filetype plugin indent on" -- required by rust.vim
 
 local use = require "packer".use
 
@@ -41,13 +44,12 @@ require "packer".startup(
         use "junegunn/fzf"
         use "junegunn/fzf.vim"
         use "windwp/nvim-autopairs"
+        use "base16-project/base16-vim"
+        use "jnurmine/Zenburn" -- nice but need adjust lsp diagnostics
+        use 'rust-lang/rust.vim'
     end
+
 )
--- require('nvim-autopairs').setup({check_ts = true})
--- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
--- local cmp = require('cmp')
--- cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done({map_char = {tex = ''}}))
--- :w
 require "nvim-autopairs".setup {
     disable_in_macro = false,
     disable_in_visualblock = false,
@@ -93,6 +95,7 @@ require "nvim-treesitter.configs".setup {
 local cmp_autopairs = require "nvim-autopairs.completion.cmp"
 
 local cmp = require "cmp"
+
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 cmp.setup(
@@ -103,7 +106,13 @@ cmp.setup(
             end
         },
         mapping = {
-            ["<Tab>"] = cmp.mapping.confirm({select = true}),
+            -- ["<Tab>"] = cmp.mapping.confirm({select = true}),
+            ['<TAB>'] = cmp.mapping(
+        { 
+          i = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
+          c = cmp.mapping(cmp.mapping.select_next_item())
+        }),
+       
             ["<C-p>"] = cmp.mapping.select_prev_item(),
             ["<C-n>"] = cmp.mapping.select_next_item()
         },
@@ -158,18 +167,6 @@ cmp.setup.cmdline(
         sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})
     }
 )
--- local cmp_autopairs = require('nvim-autopairs.completion.cmp')
--- local cmp = require('cmp')
--- cmp.event:on(
---   'confirm_done',
---   cmp_autopairs.on_confirm_done()
--- )
-
--- Setup lspconfig.
--- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
--- require('lspconfig')['tsserver'].setup {
---   capabilities = capabilities
--- }
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -217,12 +214,6 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local lspconfig = require "lspconfig"
 
-require "lspconfig".tsserver.setup {
-    on_attach = on_attach,
-    flags = lsp_flags,
-    capabilities = capabilities
-}
-
 require "lspconfig".html.setup {
     on_attach = on_attach,
     flags = lsp_flags,
@@ -234,3 +225,18 @@ require "lspconfig".cssls.setup {
     flags = lsp_flags,
     capabilities = capabilities
 }
+
+require "lspconfig".tsserver.setup {
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = capabilities
+}
+
+require "lspconfig".eslint.setup {
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = capabilities
+}
+
+cmd "autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll"
+-- autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)

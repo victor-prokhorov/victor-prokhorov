@@ -1,30 +1,30 @@
-// import React from 'react';
-// import logo from './logo.svg';
-// import './App.css';
-//
-import React from 'react'
-import logo from 'logo';
+import React from 'react';
 import './App.css';
-import Card from './cmd';
+import Card from './Card';
+import som from './index.tsx';
 
+const a = {};
 
-const a = 1;
-// const a = 2;
-//
-
+function ok() {}
+// this is a comment
 function App() {
+  <Card />;
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          Edit
+          {' '}
+          <code>src/App.tsx</code>
+          {' '}
+          and save to reload.
         </p>
         <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={ok}
         >
           Learn React
         </a>
@@ -33,6 +33,6 @@ function App() {
   );
 }
 
-console.log({a});
+console.log({ a });
 
 export default App;

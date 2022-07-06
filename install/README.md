@@ -4,22 +4,17 @@ chmod +x install.sh
 source ~/.bashrc
 source ~/.profile
 ```
-eslint boot
-
 npm install eslint --save-dev
 npm init @eslint/config
 
-initial startup
+https://go.dev/doc/install
+rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.3.linux-amd64.tar.gz
 
-dont -> tmux show -g | cat > ~/.tmux.conf
-
-jsut insert this
 set -s escape-time 0
 
-close buffer
-:bd
+:bd - close buf
 
-instead of coping files its better to simlink so both whenever you modify the thing its both changed
-init.lua for exmaple would be perfect
+sudo !! - repeat last command with sudo rights
 
-try with win bash and choco to minimize changes for windows if not maybe just ansible
+:RustFmt
+:EslintFixAll
