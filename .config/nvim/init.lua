@@ -1,10 +1,33 @@
+local use = require "packer".use
+require "packer".startup(
+    function()
+        use "wbthomason/packer.nvim"
+        use "nvim-treesitter/nvim-treesitter"
+        use "neovim/nvim-lspconfig"
+        use "hrsh7th/cmp-nvim-lsp"
+        use "hrsh7th/cmp-buffer"
+        use "hrsh7th/cmp-path"
+        use "hrsh7th/cmp-cmdline"
+        use "hrsh7th/nvim-cmp"
+        use "hrsh7th/cmp-vsnip"
+        use "hrsh7th/vim-vsnip"
+        use "junegunn/fzf"
+        use "junegunn/fzf.vim"
+        use "windwp/nvim-autopairs"
+        use "base16-project/base16-vim"
+        use "jnurmine/Zenburn" -- nice but need adjust lsp diagnostics
+        use 'rust-lang/rust.vim'
+    end
+
+)
+
 local cmd = vim.cmd
 vim.g.completeopt = "menu,menuone,noinsert,noselect"
 
 cmd "set nocompatible"
 cmd "filetype off"
 -- cmd "colorscheme base16-gruvbox-dark-hard"
-cmd "colorscheme zenburn"
+-- cmd "colorscheme zenburn"
 cmd "set updatetime=150"
 cmd "set number"
 cmd "set autoindent"
@@ -27,29 +50,6 @@ cmd "set mouse=a"
 cmd "syntax enable" -- required by rust.vim
 cmd "filetype plugin indent on" -- required by rust.vim
 
-local use = require "packer".use
-
-require "packer".startup(
-    function()
-        use "wbthomason/packer.nvim"
-        use "nvim-treesitter/nvim-treesitter"
-        use "neovim/nvim-lspconfig"
-        use "hrsh7th/cmp-nvim-lsp"
-        use "hrsh7th/cmp-buffer"
-        use "hrsh7th/cmp-path"
-        use "hrsh7th/cmp-cmdline"
-        use "hrsh7th/nvim-cmp"
-        use "hrsh7th/cmp-vsnip"
-        use "hrsh7th/vim-vsnip"
-        use "junegunn/fzf"
-        use "junegunn/fzf.vim"
-        use "windwp/nvim-autopairs"
-        use "base16-project/base16-vim"
-        use "jnurmine/Zenburn" -- nice but need adjust lsp diagnostics
-        use 'rust-lang/rust.vim'
-    end
-
-)
 require "nvim-autopairs".setup {
     disable_in_macro = false,
     disable_in_visualblock = false,
