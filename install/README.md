@@ -16,5 +16,6 @@ set -s escape-time 0
 
 sudo !! - repeat last command with sudo rights
 
-:RustFmt
+also add to run on save
 :EslintFixAll
+:RustFmt

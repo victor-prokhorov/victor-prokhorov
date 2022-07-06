@@ -1,3 +1,10 @@
 fn main() {
-    println!("Hello, world!");
+    hello("s".to_string());
+}
+
+fn hello(_unused_string_for_fun: String) -> () {
+    let mut hi: String = "hi".to_owned();
+    let world: String = " world".to_owned();
+    hi.push_str(&world);
+    println!("{}", hi);
 }

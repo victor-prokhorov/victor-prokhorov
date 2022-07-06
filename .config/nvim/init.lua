@@ -18,15 +18,17 @@ require "packer".startup(
         use "jnurmine/Zenburn" -- nice but need adjust lsp diagnostics
         use 'rust-lang/rust.vim'
     end
-
 )
 
 local cmd = vim.cmd
 vim.g.completeopt = "menu,menuone,noinsert,noselect"
 
+cmd "set clipboard=unnamed" -- share buffer between neovim and tmux
+
 cmd "set nocompatible"
 cmd "filetype off"
--- cmd "colorscheme base16-gruvbox-dark-hard"
+cmd "set termguicolors"
+cmd "colorscheme base16-gruvbox-dark-hard"
 -- cmd "colorscheme zenburn"
 cmd "set updatetime=150"
 cmd "set number"
@@ -238,5 +240,23 @@ require "lspconfig".eslint.setup {
     capabilities = capabilities
 }
 
+require "lspconfig".rust_analyzer.setup {
+  on_attach = on_attach,
+  flags = lsp_flags,
+  settings = {
+    ["rust-analyzer"] = {
+      cargo = {
+        allFeatures = true,
+      },
+      completion = {
+	postfix = {
+	  enable = false,
+	},
+      },
+    },
+  },
+  capabilities = capabilities,
+}
+
 cmd "autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll"
--- autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)
+cmd "autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)"

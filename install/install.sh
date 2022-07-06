@@ -38,6 +38,12 @@ if [ ! -d ~/.config ]; then
         ln -s ~/victor-prokhorov/.config/ ~/.config 
 fi
 
+if [ ! -d ~/.tmux.conf ]; then
+        ln -s ~/victor-prokhorov/install/.tmux.conf ~/.tmux.conf 
+fi
+
+
+
 if [ -d ~/.fzf ]
 then
         git -C ~/.fzf pull && yes | ~/.fzf/./install
@@ -48,6 +54,7 @@ fi
 
 sudo apt remove nodejs 
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+# TODO: this stack
 sudo apt install -y nodejs
 
 if [ ! -d ~/.npm-global ]; then
@@ -56,8 +63,11 @@ if [ ! -d ~/.npm-global ]; then
         echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.profile
 fi
 
+# TODO: this stack as well
 npm i -g typescript typescript-language-server vscode-langservers-extracted eslint prettier
 
+
+# timeout this too
 nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' &> /dev/null
 # https://rust-lang.github.io/rustup/installation/index.html
 
@@ -67,4 +77,11 @@ nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' &> /dev
 # rustup toolchain install nightly --allow-downgrade --profile minimal --component clippy
 
 # https://rust-analyzer.github.io/manual.html#installation
+# git clone https://github.com/rust-analyzer/rust-analyzer.git && cd rust-analyzer
 # cargo xtask install --server
+# rustup component add rustfmt
+
+# !
+# this laso include things included early edit
+rm -f ~/.bashrc 
+ln -s ~/victor-prokhorov/install/.bashrc ~/.bashrc 
