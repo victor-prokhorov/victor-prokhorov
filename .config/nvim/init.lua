@@ -1,4 +1,5 @@
 local use = require "packer".use
+
 require "packer".startup(
     function()
         use "wbthomason/packer.nvim"
@@ -16,7 +17,9 @@ require "packer".startup(
         use "windwp/nvim-autopairs"
         use "base16-project/base16-vim"
         use "jnurmine/Zenburn" -- nice but need adjust lsp diagnostics
-        use 'rust-lang/rust.vim'
+        use "rust-lang/rust.vim"
+        use "airblade/vim-rooter" -- change home dir depending on open file help to start lsp as expected
+        use {'prettier/vim-prettier', run = 'npm ci'}
     end
 )
 
@@ -261,4 +264,6 @@ require "lspconfig".rust_analyzer.setup {
 }
 
 cmd "autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll"
+cmd "let g:prettier#autoformat_config_present = 1"
 cmd "autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)"
+

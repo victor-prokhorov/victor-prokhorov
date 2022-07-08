@@ -144,6 +144,16 @@ _G.packer_plugins = {
     path = "/home/u/.local/share/nvim/site/pack/packer/start/rust.vim",
     url = "https://github.com/rust-lang/rust.vim"
   },
+  ["vim-prettier"] = {
+    loaded = true,
+    path = "/home/u/.local/share/nvim/site/pack/packer/start/vim-prettier",
+    url = "https://github.com/prettier/vim-prettier"
+  },
+  ["vim-rooter"] = {
+    loaded = true,
+    path = "/home/u/.local/share/nvim/site/pack/packer/start/vim-rooter",
+    url = "https://github.com/airblade/vim-rooter"
+  },
   ["vim-vsnip"] = {
     loaded = true,
     path = "/home/u/.local/share/nvim/site/pack/packer/start/vim-vsnip",
