@@ -1,5 +1,4 @@
 local use = require "packer".use
-
 require "packer".startup(
     function()
         use "wbthomason/packer.nvim"
@@ -34,12 +33,18 @@ cmd "set nocompatible"
 cmd "filetype off"
 cmd "set termguicolors"
 cmd "colorscheme base16-gruvbox-dark-hard"
+
+cmd [[
+  call Base16hi("Comment", g:base16_gui09, "", g:base16_cterm09, "", "", "")
+  call Base16hi("LspSignatureActiveParameter", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold", "")
+]]
+
 -- cmd "colorscheme zenburn"
 cmd "set updatetime=150" -- diagnostic message
 cmd "set number"
 cmd "set autoindent"
 cmd "set smartindent"
-cmd "set hlsearch"
+cmd "set nohlsearch"
 cmd "set hidden"
 cmd "set wildmenu"
 cmd "set wildmode=list:longest"
@@ -265,5 +270,6 @@ require "lspconfig".rust_analyzer.setup {
 
 cmd "autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll"
 cmd "let g:prettier#autoformat_config_present = 1"
-cmd "autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 1000)"
+-- vim.lsp.buf.formatting_sync is deprecated. Use vim.lsp.buf.format instead
+cmd "autocmd BufWritePre *.rs lua vim.lsp.buf.format(nil, 1000)"
 
