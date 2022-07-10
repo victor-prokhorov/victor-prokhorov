@@ -1,6 +1,6 @@
 [package]
 name = "grrs-cli-book-demo-deploy-test"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Victor Prokhorov <mail@victorprokhorov.com>"]
 license = "MIT OR Apache-2.0"
 description = "A tool to search files"
