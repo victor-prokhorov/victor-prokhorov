@@ -1,4 +1,10 @@
 TODO: split into separate file by tech, git, linux, ts, rs, etc.
+TMUX
+C b - tab, then C+0 or C+1 to switch
+C+l - toggle between windows
+C % - split v
+C+o - toggle between splits
+simply C+d to exit
 git add -A - add all file to the repo not only current folder as git add . do
 DEBUG_PRINT_LIMIT=10000 yarn test
 LINUX
@@ -11,6 +17,13 @@ grep -Rl 'console.log' src/ | xargs -n1 -I {} sh -c "sed -i '/console.log/d' {}"
 kill $(lsof -ti:6017) -- kill process
 VIM
 :g/^\s*$/d - Remove all blank lines
+:ls - list buffers
+:b0 - checkout buf 0
+:Buffers via fzf give nice preview and can be C+p / C+n
+:bd[elete] - close buffer
+C+6 - toggle between 2 last buffers
+:bp[revious]
+:bn[ext]
 S' - surround with ' in visual mode
 cst<tag - change tag to tag
 cstt - change surrounding tag by tag
