@@ -156,6 +156,7 @@ fn find_match() {
     // write prefix
     // writeln!(res, "{}", PREFIX);
     let mut to_be_compared: String = String::new();
+
     let shoud_find_string = "lol and ok\n";
     to_be_compared.push_str(PREFIX);
     to_be_compared.push_str(&shoud_find_string);

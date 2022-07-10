@@ -27,15 +27,15 @@ vim.g.completeopt = "menu,menuone,noinsert,noselect"
 
 cmd "set noswapfile"
 cmd "set signcolumn=yes" -- always draw the column for diagnostics signs 
-cmd "set clipboard=unnamed" -- share buffer between neovim and tmux
+cmd "set clipboard=unnamed" -- share buffer between neovim and system
 cmd "set timeoutlen=150"
 cmd "set nocompatible"
 cmd "filetype off"
 cmd "set termguicolors"
 cmd "colorscheme base16-gruvbox-dark-hard"
 
+-- call Base16hi("Comment", g:base16_gui09, "", g:base16_cterm09, "", "", "")
 cmd [[
-  call Base16hi("Comment", g:base16_gui09, "", g:base16_cterm09, "", "", "")
   call Base16hi("LspSignatureActiveParameter", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold", "")
 ]]
 
@@ -183,6 +183,7 @@ cmp.setup.cmdline(
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = {noremap = true, silent = true}
+-- very usefull for long lines or multiples diagnostics (err, warn) on the same line
 vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, opts)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
@@ -199,6 +200,7 @@ local on_attach = function(client, bufnr)
     local bufopts = {noremap = true, silent = true, buffer = bufnr}
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
+    -- double tap to jump inside the hover to copy or navigate long help pages
     vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
     vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
     vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
