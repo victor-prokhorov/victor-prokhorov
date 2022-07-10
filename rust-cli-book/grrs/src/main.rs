@@ -20,6 +20,9 @@ struct Cli {
     pattern: String,
     #[clap(parse(from_os_str))]
     path: std::path::PathBuf,
+    /// how many lines to print
+    #[clap(short = 'n', default_value = "5")]
+    pub count: usize,
 }
 
 use grrs_cli_book_demo_deploy_test::{find_matches, PREFIX};
@@ -28,10 +31,16 @@ use log::{info, trace};
 
 // use std::error::Error;
 use std::fmt;
-use std::{thread, time};
 
 #[derive(Debug)]
 struct CustomErr(String);
+
+use std::sync::mpsc::channel;
+
+// use std::{thread, time};
+use ctrlc;
+use signal_hook::{consts::SIGINT, iterator::Signals};
+use std::{error::Error as StdError, thread, time::Duration};
 
 // std::io::Result<()>
 // std::io::Result !== std::result::Result
@@ -39,6 +48,25 @@ struct CustomErr(String);
 // fn main() -> std::result::Result<(), CustomErr> {
 // or, if there are multiple binaries, cargo expects them to be in src/bin/<name>.rs
 fn main() -> anyhow::Result<()> {
+    let mut signals = Signals::new(&[SIGINT])?;
+
+    thread::spawn(move || {
+        for sig in signals.forever() {
+            println!("Received signal {:?}", sig);
+        }
+    });
+    thread::sleep(Duration::from_secs(10));
+
+    return Ok(());
+
+    ctrlc::set_handler(move || {
+        println!("received Ctrl+C!");
+    })
+    .expect("Error setting Ctrl-C handler");
+
+    // Following code does the actual work, and can be interrupted by pressing
+    // Ctrl-C. As an example: Let's wait a few seconds.
+
     // env RUST_LOG=info cargo run --bin output-log
     // if file is output-log
     // for this case just

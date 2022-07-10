@@ -20,8 +20,16 @@ anyhow = "1.0.58"
 indicatif = "0.16.2"
 log = "0.4.17"
 env_logger = "0.9.0"
+ctrlc = { version = "3.0", features = ["termination"] }
+signal-hook = "0.3.14"
+crossbeam-channel = "0.5.5"
+confy = "0.4.0"
+serde = { version = "1.0", features = ["derive"] }
+exitcode = "1.1.2"
+human-panic = "1.0.3"
 
 [dev-dependencies]
 assert_cmd = "2.0"
 predicates = "2.1"
 assert_fs = "1.0"
+# ctrlc = "3.2.2"

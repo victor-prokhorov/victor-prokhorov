@@ -275,3 +275,4 @@ cmd "let g:prettier#autoformat_config_present = 1"
 -- vim.lsp.buf.formatting_sync is deprecated. Use vim.lsp.buf.format instead
 cmd "autocmd BufWritePre *.rs lua vim.lsp.buf.format(nil, 1000)"
 
+cmd 'nmap <leader>w :w<CR>' -- quick save
