@@ -22,7 +22,7 @@ struct Cli {
     path: std::path::PathBuf,
 }
 
-use grrs::{find_matches, PREFIX};
+use grrs_cli_book_demo_deploy_test::{find_matches, PREFIX};
 
 use log::{info, trace};
 

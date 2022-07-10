@@ -1,5 +1,5 @@
 use assert_cmd::prelude::*; // Add methods on commands
-use grrs::PREFIX;
+use grrs_cli_book_demo_deploy_test::PREFIX;
 use predicates::prelude::*; // Used for writing assertions
 use std::process::Command; // Run programs
 
