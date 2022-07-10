@@ -7,8 +7,8 @@ find . -name 'node_modules' -type d -exec rm -r '{}' \;
 find . -iname '*pattern*' - case insensitive search file containing pattern
 grep -Ril 'pattern' . - search pattern from current folder
 (need exclude for node_modules)
-grep -Rl 'console.log' src/ | xargs -n1 -I {} sh -c "sed -i '/console.log/d' {}"
-kill $(lsof -ti:6017)
+grep -Rl 'console.log' src/ | xargs -n1 -I {} sh -c "sed -i '/console.log/d' {}" -- remove console logs
+kill $(lsof -ti:6017) -- kill process
 VIM
 :g/^\s*$/d - Remove all blank lines
 S' - surround with ' in visual mode
@@ -38,9 +38,6 @@ on merge request remove branch and squash commits
 YARN
 yarn build
 yarn link
-REACT_COMPONENTS
-to link with service layer change index.html
-don't forget to check if .env and package.json are uat
 PACKAGES
 npx npm-check-updates -u @your_org/*
 GIT
