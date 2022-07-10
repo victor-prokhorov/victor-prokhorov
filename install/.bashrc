@@ -104,6 +104,25 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
+function git_sync() {
+  dt=$(date '+%d/%m/%Y %H:%M:%S');
+  git add -A
+
+  if test -z "$*"
+  then
+    echo "$dt"
+    git commit -m "$dt"
+  else
+    echo "$*"
+    git commit -m "$*"
+  fi
+
+  git push
+}
+
+alias gs=git_sync
+
+
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
