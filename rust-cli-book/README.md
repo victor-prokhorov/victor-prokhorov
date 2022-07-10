@@ -1,3 +1,3 @@
 https://rust-cli.github.io/book/index.html
-abc
-
+https://docs.rs/proptest/latest/proptest/
+https://rust-fuzz.github.io/book/introduction.html

@@ -16,6 +16,10 @@ grep -Ril 'pattern' . - search pattern from current folder
 grep -Rl 'console.log' src/ | xargs -n1 -I {} sh -c "sed -i '/console.log/d' {}" -- remove console logs
 kill $(lsof -ti:6017) -- kill process
 VIM
+Backspace delete the character before the cursor
+Ctrl+h also deletes the character before the cursor
+Ctrl+w delete characters before the cursor until start of a word
+Ctrl+u delete all the characters before the cursor in the current line, preserves indentation if any same as in bash for C+w & C+u
 :g/^\s*$/d - Remove all blank lines
 :ls - list buffers
 :b0 - checkout buf 0

@@ -11,7 +11,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 // use std::io::{self, BufRead};
-use anyhow::{Context, Error, Result};
+// const PREFIX: &str = "found - ";
+use anyhow::{anyhow, Context, Error, Result};
 use std::io::{self, Write};
 
 #[derive(Parser, Debug)]
@@ -21,33 +22,7 @@ struct Cli {
     path: std::path::PathBuf,
 }
 
-const PREFIX: &str = "found - ";
-
-fn find_matches(
-    content: &str,
-    pattern: &str,
-    mut writer: impl std::io::Write,
-) -> Result<(), Error> {
-    for line in content.lines() {
-        if line.contains(pattern) {
-            // println! works the same as writeln! but always uses standard output
-            // correct err handling:
-            writeln!(writer, "{}{}", PREFIX, line)?;
-            // bad:
-            // just notify: error in write op without returning Result
-            // let res = writeln!(writer, "found - {}", line);
-            // match res {
-            //     Ok(_) => {
-            //         println!("wrote to `writer` succefully")
-            //     }
-            //     Err(_) => {
-            //         println!("failed to write to `writer` succefully")
-            //     }
-            // }
-        }
-    }
-    Ok(())
-}
+use grrs::{find_matches, PREFIX};
 
 use log::{info, trace};
 
@@ -62,7 +37,8 @@ struct CustomErr(String);
 // std::io::Result !== std::result::Result
 // fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
 // fn main() -> std::result::Result<(), CustomErr> {
-fn main() -> Result<()> {
+// or, if there are multiple binaries, cargo expects them to be in src/bin/<name>.rs
+fn main() -> anyhow::Result<()> {
     // env RUST_LOG=info cargo run --bin output-log
     // if file is output-log
     // for this case just
@@ -85,6 +61,11 @@ fn main() -> Result<()> {
     // pb.finish_with_message("done");
 
     let args = Cli::parse();
+    if args.pattern.is_empty() {
+        // println!("the pattern is empty");
+        return Err(anyhow!("the pattern is empty"));
+    }
+
     let file_as_string = std::fs::read_to_string(&args.path)
         .with_context(|| format!("could not read file `{}`", args.path.display()))?;
     find_matches(&file_as_string, &args.pattern, &mut std::io::stdout())?;
@@ -144,27 +125,6 @@ fn main() -> Result<()> {
     //     }
     // }
     // TODO: notify that nothing was found
-}
-#[test]
-fn find_match() {
-    let mut res = Vec::new();
-    let ret = find_matches("hi\nlol and ok\nlulz", "lol", &mut res);
-    // The b prefix makes this a byte string literal
-    // so its type is going to be &[u8] instead of &str
-    // certainly need to handle this instead of unwrapping
-
-    // write prefix
-    // writeln!(res, "{}", PREFIX);
-    let mut to_be_compared: String = String::new();
-
-    let shoud_find_string = "lol and ok\n";
-    to_be_compared.push_str(PREFIX);
-    to_be_compared.push_str(&shoud_find_string);
-    println!("to be comp: {}", to_be_compared);
-    assert_eq!(ret.unwrap(), ());
-    // first iteration without prefix
-    // assert_eq!(res, b"lol and ok\n");
-    assert_eq!(res, to_be_compared.as_bytes());
 }
 
 #[cfg(test)]
