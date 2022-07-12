@@ -4,17 +4,34 @@
 // It won't compile right now! Why?
 // Execute `rustlings hint errors5` for hints!
 
-// I AM NOT DONE
-
 use std::error;
 use std::fmt;
-use std::num::ParseIntError;
+// use std::num::ParseIntError;
 
 // TODO: update the return type of `main()` to make this compile.
-fn main() -> Result<(), ParseIntError> {
+fn main() -> Result<(), Box<dyn error::Error>> {
     let pretend_user_input = "42";
     let x: i64 = pretend_user_input.parse()?;
     println!("output={:?}", PositiveNonzeroInteger::new(x)?);
+    let u: u8 = 123;
+    let m = match u {
+        x if x < 0 => Err(CreationError::Negative),
+        x if x == 0 => Err(CreationError::Zero),
+        x => Ok(PositiveNonzeroInteger(x as u64)),
+    };
+    assert_eq!(m, Ok(PositiveNonzeroInteger(123_u64)));
+
+    let r = match 9 {
+        x if x == 8 => {
+            println!("8");
+        }
+        // don't have to be same variable
+        a => {
+            println!("not 8 but {}", a);
+        }
+    };
+    assert_eq!(r, ());
+
     Ok(())
 }
 
@@ -32,9 +49,10 @@ enum CreationError {
 impl PositiveNonzeroInteger {
     fn new(value: i64) -> Result<PositiveNonzeroInteger, CreationError> {
         match value {
+            // capture first then do the logic
             x if x < 0 => Err(CreationError::Negative),
             x if x == 0 => Err(CreationError::Zero),
-            x => Ok(PositiveNonzeroInteger(x as u64))
+            x => Ok(PositiveNonzeroInteger(x as u64)),
         }
     }
 }
