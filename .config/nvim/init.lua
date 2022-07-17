@@ -32,8 +32,8 @@ cmd "set timeoutlen=150"
 cmd "set nocompatible"
 cmd "filetype off"
 cmd "set termguicolors"
--- cmd "colorscheme base16-gruvbox-dark-hard"
-cmd "colorscheme zenburn"
+cmd "colorscheme base16-gruvbox-dark-hard"
+-- cmd "colorscheme zenburn"
 -- less rainbow yolostyle colors on errors
 cmd [[
 hi DiagnosticError guifg=White
