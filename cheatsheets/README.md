@@ -2,7 +2,7 @@ TODO: split into separate file by tech, git, linux, ts, rs, etc.
 * setup autocompletion for renaming from current buffer example:
 word1234
 :%s/w[tab] -> should autocomplete :%s/word1234
-
+* check for more convenient autocompletion in bash somethig similar to fish
 TMUX
 C b - tab, then C+0 or C+1 to switch
 C+l - toggle between windows

@@ -1,0 +1,5 @@
+- https://rust-cli.github.io/book/index.html
+- https://github.com/rust-lang/rustlings
+- https://rustacean-station.org/episode/049-lily-mara/ TODO: forget to take notes on benchmarking and memory footpring
+- https://docs.rust-embedded.org/book/intro/index.html?ref=hackr.io
+- https://doc.rust-lang.org/stable/nomicon/
