@@ -41,6 +41,52 @@ enum ParsePersonError {
 impl FromStr for Person {
     type Err = ParsePersonError;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        if s.is_empty() {
+            return Err(ParsePersonError::Empty);
+        }
+
+        let s = s.split(',').collect::<Vec<&str>>();
+        // if s.len() != 2 {
+        //     return Err(ParsePersonError::BadLen);
+        // }
+
+        // let name = s[0].trim();
+        // if name.is_empty() {
+        //     return Err(ParsePersonError::NoName);
+        // }
+
+        // let age = s[1];
+        // let age_parse_result: Result<usize, ParseIntError> = age.parse::<usize>();
+        // let age_usize: usize = match age_parse_result {
+        //     Ok(age) => age,
+        //     Err(err) => return Err(ParsePersonError::ParseInt(err)),
+        // };
+        // return Ok(Person {
+        //     name: name.to_string(),
+        //     age: age_usize,
+        // });
+        // alt version
+        // let (name, age) = match &s[..] {
+        match &s[..] {
+            [name, age] => {
+                if name.is_empty() {
+                    return Err(ParsePersonError::NoName);
+                }
+                // (
+                //     name.to_string(),
+                //     age.parse().map_err(ParsePersonError::ParseInt)?,
+                // )
+                // instead of implicitly returning a tuple
+                // we can full return here to avoid new vars
+                return Ok(Person {
+                    name: name.to_string(),
+                    age: age.parse().map_err(ParsePersonError::ParseInt)?,
+                });
+            }
+            _ => return Err(ParsePersonError::BadLen),
+        };
+
+        // Ok(Person { age, name })
     }
 }
 
