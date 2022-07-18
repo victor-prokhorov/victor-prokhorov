@@ -17,6 +17,11 @@ impl Default for Person {
         }
     }
 }
+impl Person {
+    fn new() -> Self {
+        Default::default()
+    }
+}
 
 // Your task is to complete this implementation
 // in order for the line `let p = Person::from("Mark,20")` to compile
@@ -37,9 +42,43 @@ impl Default for Person {
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        // implementing rule by rule
+        // error first aka early returns
+        // if s.len() == 0 {
+        //     return Person::new();
+        // }
+        // let v: Vec<&str> = s.split(',').collect();
+        // if v.len() < 2 || v.len() % 2 != 0 {
+        //     return Person::new();
+        // }
+        // if v[0].is_empty() {
+        //     return Person::new();
+        // };
+        // let age = v[1].parse::<usize>();
+        // if let Err(e) = age {
+        //     return Person::new();
+        // }
+        // return Person {
+        //     name: v[0].to_string(),
+        //     age: age.unwrap(),
+        // };
+        // happy path first then return default
+        if let Some((name, age)) = s.split_once(',') {
+            let age = age.parse::<usize>();
+            if let Ok(age) = age {
+                if !name.is_empty() {
+                    return Person {
+                        name: name.to_string(),
+                        age,
+                    };
+                }
+            }
+        }
+
+        return Person::new();
     }
 }
-
+//"4".parse::<usize>()
 fn main() {
     // Use the `from` function
     let p1 = Person::from("Mark,20");
