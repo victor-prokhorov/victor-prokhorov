@@ -21,8 +21,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
-
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
 // You need to create an implementation for a tuple of three integers,
@@ -36,6 +34,17 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        // as option we can use clamp to get correct u8 value instead of erroring
+        // ex: red: tuple.0.clamp(0, 256) as u8,
+        let r = 0..=255;
+        if !r.contains(&tuple.0) || !r.contains(&tuple.1) || !r.contains(&tuple.2) {
+            return Err(IntoColorError::IntConversion);
+        }
+        Ok(Color {
+            red: tuple.0 as u8,
+            green: tuple.1 as u8,
+            blue: tuple.2 as u8,
+        })
     }
 }
 
@@ -43,13 +52,41 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        // let r = 0..=255;
+        // if !r.contains(&arr[0]) || !r.contains(&arr[1]) || !r.contains(&arr[2]) {
+        //     return Err(IntoColorError::IntConversion);
+        // }
+        // or
+        for color in arr {
+            if !(0..=255).contains(&color) {
+                return Err(IntoColorError::IntConversion);
+            }
+        }
+        Ok(Color {
+            red: arr[0] as u8,
+            green: arr[1] as u8,
+            blue: arr[2] as u8,
+        })
     }
 }
 
 // Slice implementation
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+    fn try_from(arr: &[i16]) -> Result<Self, Self::Error> {
+        if arr.len() != 3 {
+            return Err(IntoColorError::BadLen);
+        }
+        for color in arr {
+            if !(0..=255).contains(color) {
+                return Err(IntoColorError::IntConversion);
+            }
+        }
+        Ok(Color {
+            red: arr[0] as u8,
+            green: arr[1] as u8,
+            blue: arr[2] as u8,
+        })
     }
 }
 
@@ -79,7 +116,12 @@ mod tests {
     fn test_tuple_out_of_range_positive() {
         assert_eq!(
             Color::try_from((256, 1000, 10000)),
-            Err(IntoColorError::IntConversion)
+            Err(IntoColorError::IntConversion) // if clamp
+                                               // Ok(Color {
+                                               //     blue: 255,
+                                               //     green: 255,
+                                               //     red: 255
+                                               // })
         );
     }
     #[test]
