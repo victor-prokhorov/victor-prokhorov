@@ -15,10 +15,10 @@ require "packer".startup(
         use "junegunn/fzf.vim"
         use "windwp/nvim-autopairs"
         use "base16-project/base16-vim"
-        use "jnurmine/Zenburn" 
+        use "jnurmine/Zenburn"
         use "rust-lang/rust.vim"
-        use "airblade/vim-rooter" 
-        use {'prettier/vim-prettier', run = 'npm ci'}
+        use "airblade/vim-rooter"
+        use {"prettier/vim-prettier", run = "npm ci"}
     end
 )
 
@@ -26,7 +26,7 @@ local cmd = vim.cmd
 vim.g.completeopt = "menu,menuone,noinsert,noselect"
 
 cmd "set noswapfile"
-cmd "set signcolumn=yes" -- always draw the column for diagnostics signs 
+cmd "set signcolumn=yes" -- always draw the column for diagnostics signs
 cmd "set clipboard=unnamed" -- share buffer between neovim and system
 cmd "set timeoutlen=150"
 cmd "set nocompatible"
@@ -40,7 +40,6 @@ hi DiagnosticWarn  guifg=White
 hi DiagnosticInfo  guifg=White
 hi DiagnosticHint  guifg=White
 ]]
-
 
 -- call Base16hi("Comment", g:base16_gui09, "", g:base16_cterm09, "", "", "")
 -- cmd [[ call Base16hi("LspSignatureActiveParameter", g:base16_gui05, g:base16_gui03, g:base16_cterm05, g:base16_cterm03, "bold", "") ]]
@@ -124,12 +123,12 @@ cmp.setup(
         },
         mapping = {
             -- ["<Tab>"] = cmp.mapping.confirm({select = true}),
-            ['<TAB>'] = cmp.mapping(
-        { 
-          i = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
-          c = cmp.mapping(cmp.mapping.select_next_item())
-        }),
-       
+            ["<TAB>"] = cmp.mapping(
+                {
+                    i = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
+                    c = cmp.mapping(cmp.mapping.select_next_item())
+                }
+            ),
             ["<C-p>"] = cmp.mapping.select_prev_item(),
             ["<C-n>"] = cmp.mapping.select_next_item()
         },
@@ -258,21 +257,24 @@ require "lspconfig".eslint.setup {
 }
 
 require "lspconfig".rust_analyzer.setup {
-  on_attach = on_attach,
-  flags = lsp_flags,
-  settings = {
-    ["rust-analyzer"] = {
-      cargo = {
-        allFeatures = true,
-      },
-      completion = {
-	postfix = {
-	  enable = false,
-	},
-      },
+    on_attach = on_attach,
+    flags = lsp_flags,
+    settings = {
+        ["rust-analyzer"] = {
+            cargo = {
+                allFeatures = true
+            },
+            completion = {
+                postfix = {
+                    enable = false
+                }
+            },
+            checkOnSave = {
+                command = "clippy" -- show clippy errors
+            }
+        }
     },
-  },
-  capabilities = capabilities,
+    capabilities = capabilities
 }
 
 cmd "autocmd BufWritePre *.tsx,*.ts,*.jsx,*.js EslintFixAll"
@@ -280,4 +282,4 @@ cmd "let g:prettier#autoformat_config_present = 1"
 -- vim.lsp.buf.formatting_sync is deprecated. Use vim.lsp.buf.format instead
 cmd "autocmd BufWritePre *.rs lua vim.lsp.buf.format(nil, 1000)"
 
-cmd 'nmap <leader>w :w<CR>' -- quick save
+cmd "nmap <leader>w :w<CR>" -- quick save

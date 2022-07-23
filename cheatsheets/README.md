@@ -1,4 +1,9 @@
 TODO: split into separate file by tech, git, linux, ts, rs, etc.
+- Alt-c - cd into selected dir 
+-  fzf, cd **<TAB>
+- kill -9 **<TAB>
+- C-r replace default bash autocomplete with fzf
+
 * setup autocompletion for renaming from current buffer example:
 word1234
 :%s/w[tab] -> should autocomplete :%s/word1234

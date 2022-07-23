@@ -78,6 +78,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-t
 source ~/.profile
 rustup toolchain install nightly --allow-downgrade --profile minimal --component clippy rustfmt
 # rustup component add rustfmt
+# rustup component add clippy
 
 # https://rust-analyzer.github.io/manual.html#installation
 git clone https://github.com/rust-analyzer/rust-analyzer.git ~/rust-analyzer && cd ~/rust-analyzer
