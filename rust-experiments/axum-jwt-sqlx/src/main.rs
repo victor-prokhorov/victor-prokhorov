@@ -4,7 +4,11 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
+use hmac::{Hmac, Mac};
+use jwt::SignWithKey;
 use serde::{Deserialize, Serialize};
+use sha2::Sha256;
+use std::collections::BTreeMap;
 use std::net::SocketAddr;
 
 #[tokio::main]
@@ -40,11 +44,22 @@ async fn create_user(
     Json(payload): Json<CreateUser>,
 ) -> impl IntoResponse {
     // insert your application logic here
+
+    let key: Hmac<Sha256> = Hmac::new_from_slice(b"some-secret").unwrap();
+    let mut claims = BTreeMap::new();
+    claims.insert("sub", "someone");
+    let token_str = claims.sign_with_key(&key).unwrap();
+    assert_eq!(
+        token_str,
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb21lb25lIn0.5wwE1sBrs-vftww_BGIuTVDeHtc1Jsjo-fiHhDwR8m0"
+    );
+
     println!("{:?}", payload.username);
     println!("{:?}", payload.random_field);
     println!("{:?}", payload.number);
-    let new_n = payload.number + 1_i32;
+    let new_n: i32 = payload.number + 1_i32;
     println!("{:?}", new_n);
+
     if let Some(x) = payload.optional {
         println!("{x}",);
     } else {
