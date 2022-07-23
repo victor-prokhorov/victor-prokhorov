@@ -1,3 +1,8 @@
+cargo install cargo-watch -- seems to be equivalent to nodemon in node ecosys
+-c clear the screen -x the cmd to exec
+cargo watch -c -x -w 'src/bin' run --bin my_cool_app'
+https://everything.curl.dev/http/cheatsheet
+-d @file -- post from file
 TODO: split into separate file by tech, git, linux, ts, rs, etc.
 - Alt-c - cd into selected dir 
 -  fzf, cd **<TAB>
