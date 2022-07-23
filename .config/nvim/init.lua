@@ -15,9 +15,9 @@ require "packer".startup(
         use "junegunn/fzf.vim"
         use "windwp/nvim-autopairs"
         use "base16-project/base16-vim"
-        use "jnurmine/Zenburn" -- nice but need adjust lsp diagnostics
+        use "jnurmine/Zenburn" 
         use "rust-lang/rust.vim"
-        use "airblade/vim-rooter" -- change home dir depending on open file help to start lsp as expected
+        use "airblade/vim-rooter" 
         use {'prettier/vim-prettier', run = 'npm ci'}
     end
 )
@@ -32,9 +32,8 @@ cmd "set timeoutlen=150"
 cmd "set nocompatible"
 cmd "filetype off"
 cmd "set termguicolors"
-cmd "colorscheme base16-gruvbox-dark-hard"
--- cmd "colorscheme zenburn"
--- less rainbow yolostyle colors on errors
+-- cmd "colorscheme base16-gruvbox-dark-hard"
+cmd "colorscheme zenburn"
 cmd [[
 hi DiagnosticError guifg=White
 hi DiagnosticWarn  guifg=White
