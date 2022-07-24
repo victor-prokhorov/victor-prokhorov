@@ -33,7 +33,8 @@ cmd "set nocompatible"
 cmd "filetype off"
 cmd "set termguicolors"
 -- cmd "colorscheme base16-gruvbox-dark-hard"
-cmd "colorscheme zenburn"
+-- cmd "colorscheme zenburn"
+cmd "colorscheme zellner" -- buildin light theme
 cmd [[
 hi DiagnosticError guifg=White
 hi DiagnosticWarn  guifg=White
@@ -256,6 +257,11 @@ require "lspconfig".tsserver.setup {
     flags = lsp_flags,
     capabilities = capabilities
 }
+-- add npm i -g bash-language-server
+-- into install script
+-- TODO: refine its just quick copy past 
+-- no formatting :(
+require("lsp-format").setup {}
 
 require "lspconfig".eslint.setup {
     on_attach = on_attach,
