@@ -5,14 +5,16 @@ use axum::{
     http::StatusCode,
     response::{IntoResponse, Response},
     routing::{get, post},
-    Json, Router,
+    Extension, Json, Router,
 };
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::fmt::Display;
 use std::net::SocketAddr;
+use tracing::info;
 
 static KEYS: Lazy<Keys> = Lazy::new(|| {
     // let secret = std::env::var("JWT_SECRET").expect("JWT_SECRET must be set");
@@ -20,13 +22,76 @@ static KEYS: Lazy<Keys> = Lazy::new(|| {
     Keys::new(secret.as_bytes())
 });
 
+// we can extract the connection pool with `Extension`
+async fn using_connection_pool_extractor(
+    Extension(pool): Extension<PgPool>,
+) -> Result<String, (StatusCode, String)> {
+    sqlx::query_scalar("select 'hello world from pg'")
+        .fetch_one(&pool)
+        .await
+        .map_err(internal_error)
+}
+async fn using_connection_extractor(
+    DatabaseConnection(conn): DatabaseConnection,
+) -> Result<String, (StatusCode, String)> {
+    let mut conn = conn;
+    sqlx::query_scalar("select 'hello world from pg'")
+        .fetch_one(&mut conn)
+        .await
+        .map_err(internal_error)
+}
+
+/// Utility function for mapping any error into a `500 Internal Server Error`
+/// response.
+fn internal_error<E>(err: E) -> (StatusCode, String)
+where
+    E: std::error::Error,
+{
+    (StatusCode::INTERNAL_SERVER_ERROR, err.to_string())
+}
+
+struct DatabaseConnection(sqlx::pool::PoolConnection<sqlx::Postgres>);
+
+#[async_trait]
+impl<B> FromRequest<B> for DatabaseConnection
+where
+    B: Send,
+{
+    type Rejection = (StatusCode, String);
+
+    async fn from_request(req: &mut RequestParts<B>) -> Result<Self, Self::Rejection> {
+        let Extension(pool) = Extension::<PgPool>::from_request(req)
+            .await
+            .map_err(internal_error)?;
+
+        let conn = pool.acquire().await.map_err(internal_error)?;
+
+        Ok(Self(conn))
+    }
+}
+
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt::init();
 
+    let pool = PgPoolOptions::new()
+        .max_connections(5)
+        .connect_timeout(std::time::Duration::from_secs(3))
+        // CREATE DATABASE db
+        .connect("postgres://postgres:mysecretpassword@localhost:5432/db")
+        .await
+        .expect("can connect to database");
+    // let app = Router::new()
+    //     .route(
+    //         "/",
+    //         get(using_connection_pool_extractor).post(using_connection_extractor),
+    //     )
+    //     .layer(Extension(pool));
+
     let app = Router::new()
         .route("/", get(root))
         .route("/users", post(create_user))
+        .layer(Extension(pool))
         .route("/protected", get(protected))
         .route("/authorize", post(authorize));
 
@@ -46,9 +111,17 @@ async fn create_user(
     // this argument tells axum to parse the request body
     // as JSON into a `CreateUser` type
     Json(payload): Json<CreateUser>,
+    // DatabaseConnection(conn): DatabaseConnection,
+    Extension(pool): Extension<PgPool>,
 ) -> impl IntoResponse {
     // insert your application logic here
     tracing::info!("{:?}", payload);
+    //let mut conn = conn;
+
+    // let row = sqlx::query_scalar("select 'hello world from pg'")
+    //     .fetch_one(&mut conn)
+    //     .await
+    //     .map_err(internal_error);
 
     let user = User {
         id: 1,
@@ -62,6 +135,7 @@ async fn create_user(
 
 async fn authorize(Json(payload): Json<AuthPayload>) -> Result<Json<AuthBody>, AuthError> {
     // Check if the user sent the credentials
+    info!("{:?}", payload);
     if payload.client_id.is_empty() || payload.client_secret.is_empty() {
         return Err(AuthError::MissingCredentials);
     }

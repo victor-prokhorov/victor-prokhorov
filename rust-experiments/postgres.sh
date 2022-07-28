@@ -9,3 +9,5 @@ postgres-# CREATE DATABASE mytest;
 postgres-# \q
 \l
 
+then use url connection string 
+postgres://user:secret@localhost:5432/mydatabasenam
