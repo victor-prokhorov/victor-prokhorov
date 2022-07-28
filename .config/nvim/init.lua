@@ -19,6 +19,7 @@ require "packer".startup(
         use "rust-lang/rust.vim"
         use "airblade/vim-rooter"
         use {"prettier/vim-prettier", run = "npm ci"}
+        use "tomasr/molokai"
     end
 )
 
@@ -32,9 +33,11 @@ cmd "set timeoutlen=150"
 cmd "set nocompatible"
 cmd "filetype off"
 cmd "set termguicolors"
+cmd "colorscheme molokai"
+
 -- cmd "colorscheme base16-gruvbox-dark-hard"
 -- cmd "colorscheme zenburn"
-cmd "colorscheme zellner" -- buildin light theme
+-- cmd "colorscheme zellner" -- buildin light theme
 cmd [[
 hi DiagnosticError guifg=White
 hi DiagnosticWarn  guifg=White

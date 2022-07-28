@@ -114,10 +114,10 @@ _G.packer_plugins = {
     path = "/home/u/.local/share/nvim/site/pack/packer/start/fzf.vim",
     url = "https://github.com/junegunn/fzf.vim"
   },
-  ["lsp-format.nvim"] = {
+  molokai = {
     loaded = true,
-    path = "/home/u/.local/share/nvim/site/pack/packer/start/lsp-format.nvim",
-    url = "https://github.com/lukas-reineke/lsp-format.nvim"
+    path = "/home/u/.local/share/nvim/site/pack/packer/start/molokai",
+    url = "https://github.com/tomasr/molokai"
   },
   ["nvim-autopairs"] = {
     loaded = true,
