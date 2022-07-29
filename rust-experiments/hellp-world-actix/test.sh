@@ -40,8 +40,9 @@ curl -s \
     -H 'x-guarded: secret' \
     http://localhost:8080/app/guard
 
-
-
+curl -s \
+    -w '\n' \
+    http://localhost:8080/responder
 
 
 

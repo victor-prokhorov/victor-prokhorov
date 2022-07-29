@@ -1,5 +1,6 @@
 use actix_web::{
-    get, guard, http::KeepAlive, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder,
+    get, guard, http::KeepAlive, middleware::Logger, post, web, App, HttpRequest, HttpResponse,
+    HttpServer, Responder,
 };
 // use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
 use std::sync::Mutex;
@@ -27,6 +28,7 @@ struct AppState {
     app_name: String,
 }
 
+#[derive(Debug)]
 struct AppStateWithCounter {
     counter: Mutex<i32>,
 }
@@ -51,8 +53,10 @@ async fn openssl_service(_req: HttpRequest) -> impl Responder {
 async fn simple_req(_req: HttpRequest) -> &'static str {
     "Hello world!"
 }
-#[allow(dead_code)]
-async fn responder_req(_req: HttpRequest) -> impl Responder {
+
+async fn responder_req(req: HttpRequest, data: web::Data<AppStateWithCounter>) -> impl Responder {
+    log::info!("responder_req, req, {:?}", req);
+    log::info!("responder_req, data, {:?}", data);
     web::Bytes::from_static(b"Hello world!")
 }
 
@@ -79,8 +83,14 @@ async fn main() -> std::io::Result<()> {
     // builder.set_certificate_chain_file("cert.pem").unwrap();
 
     // HttpServer automatically starts a number of HTTP workers, by default this number is equal to the number of logical CPUs in the system.
+    std::env::set_var("RUST_LOG", "debug");
+    env_logger::init();
+    log::info!(target: "logging", "yay!");
     HttpServer::new(move || {
+        let logger = Logger::default();
+
         App::new()
+            .wrap(logger)
             .service(hello)
             .service(echo)
             .route("/hey", web::get().to(manual_hello))
@@ -99,6 +109,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(counter.clone())
             .route("/counter", web::get().to(mutable_state))
             .route("/print-count", web::get().to(print_without_increment))
+            .route("/responder", web::get().to(responder_req))
     })
     // .bind_openssl("127.0.0.1:8080", builder)?
     .keep_alive(KeepAlive::Os)
