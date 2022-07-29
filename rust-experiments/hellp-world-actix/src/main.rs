@@ -1,8 +1,14 @@
 use actix_web::{
-    get, guard, http::KeepAlive, middleware::Logger, post, web, App, HttpRequest, HttpResponse,
-    HttpServer, Responder,
+    body::BoxBody,
+    error, get, guard,
+    http::{header::ContentType, KeepAlive},
+    middleware::Logger,
+    post, web, App, Error, HttpRequest, HttpResponse, HttpServer, Responder, Result,
 };
+
+use serde::{Deserialize, Serialize};
 // use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
+use futures::{future::ok, stream::once};
 use std::sync::Mutex;
 
 #[get("/")]
@@ -54,13 +60,69 @@ async fn simple_req(_req: HttpRequest) -> &'static str {
     "Hello world!"
 }
 
+#[derive(Serialize)]
+struct MyObj {
+    name: &'static str,
+}
+
+impl Responder for MyObj {
+    type Body = BoxBody;
+
+    fn respond_to(self, _req: &HttpRequest) -> HttpResponse<Self::Body> {
+        let body = serde_json::to_string(&self).unwrap();
+
+        // Create response and set content type
+        HttpResponse::Ok()
+            .content_type(ContentType::json())
+            .body(body)
+    }
+}
+
 async fn responder_req(req: HttpRequest, data: web::Data<AppStateWithCounter>) -> impl Responder {
     log::info!("responder_req, req, {:?}", req);
     log::info!("responder_req, data, {:?}", data);
-    web::Bytes::from_static(b"Hello world!")
+    let _bytes = web::Bytes::from_static(b"Hello world!");
+    MyObj { name: "user" }
 }
 
 // async fn index(req: HttpRequest) -> Box<Future<Item = HttpResponse, Error = Error>> {}
+
+#[get("/stream")]
+async fn stream() -> HttpResponse {
+    log::info!("stream");
+    let body = once(ok::<_, Error>(web::Bytes::from_static(b"test")));
+
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .streaming(body)
+}
+#[derive(Deserialize)]
+struct User {
+    name: String,
+    id: u64,
+}
+#[derive(Deserialize)]
+struct Qr {
+    yes: String,
+}
+#[derive(Deserialize, Debug)]
+struct JPayload {
+    mega_field: u64,
+}
+
+// http://localhost:8080/users/666/fancyname?yes=yeeeees%20a%20lot
+#[get("/users/{id}/{name}")]
+async fn path_params_query(p: web::Path<User>, q: web::Query<Qr>) -> Result<String> {
+    Ok(format!(
+        "Hi {}, your id is {}, yes? {}",
+        p.name, p.id, q.yes
+    ))
+}
+#[post("/users")]
+async fn post_users(j: web::Json<JPayload>) -> Result<String> {
+    log::info!("json body {:?}", j);
+    Ok(format!("json payload mega field {}", j.mega_field))
+}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -88,8 +150,15 @@ async fn main() -> std::io::Result<()> {
     log::info!(target: "logging", "yay!");
     HttpServer::new(move || {
         let logger = Logger::default();
+        let json_config = web::JsonConfig::default()
+            .limit(4096)
+            .error_handler(|err, _req| {
+                // create custom error response
+                error::InternalError::from_response(err, HttpResponse::Conflict().finish()).into()
+            });
 
         App::new()
+            .app_data(json_config)
             .wrap(logger)
             .service(hello)
             .service(echo)
@@ -110,6 +179,9 @@ async fn main() -> std::io::Result<()> {
             .route("/counter", web::get().to(mutable_state))
             .route("/print-count", web::get().to(print_without_increment))
             .route("/responder", web::get().to(responder_req))
+            .service(stream)
+            .service(path_params_query)
+            .service(post_users)
     })
     // .bind_openssl("127.0.0.1:8080", builder)?
     .keep_alive(KeepAlive::Os)
